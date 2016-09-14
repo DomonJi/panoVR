@@ -120,9 +120,9 @@ updateDes(currentScene.des);
 function init() {
     camera = new THREE.PerspectiveCamera(fov, ratio, 1, 1000);
     scene = new THREE.Scene();
-    guid = new THREE.Mesh(new THREE.PlaneGeometry(100, 100, 10, 10), new THREE.MeshBasicMaterial({color: 0x000}));
-    guid.position.x = -258.1;
-    guid.position.z = 187;
+    guid = new THREE.Mesh(new THREE.PlaneGeometry(130, 250, 10, 10), new THREE.MeshBasicMaterial({color: 0x000}));
+    guid.position.x = -300;
+    guid.position.z = 420;
     guid.position.y = -25;
     guid.rotation.y = 40;
     mesh = new THREE.Mesh(new THREE.SphereGeometry(500, 60, 40), new THREE.MeshBasicMaterial({map: texture}));
@@ -136,11 +136,10 @@ function init() {
     element.addEventListener('mousewheel', onDocumentMouseWheel, false);
     element.addEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
     window.addEventListener('resize', onWindowResized, false);
+    document.addEventListener('mousedown', detectClick, false);
+    document.addEventListener('mousemove', detectMove, false);
     onWindowResized(null);
 }
-
-document.addEventListener('mousedown', detectClick, false);
-document.addEventListener('mousemove', detectMove, false);
 
 function detectClick(event) {
     var raycaster = new THREE.Raycaster();

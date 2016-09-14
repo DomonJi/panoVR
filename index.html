@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html>
-	<head>
-        <meta charset="utf-8" />
-		<title>Panoramic Jiangnan</title>
-	</head>
-	<body>
-    <header class="header">
-      江南大学校史馆
-      <img class="info" src="./imgs/info.svg" onclick="showInfo()"/>
-      <div class="space"></div>
-      <div class="control">
-        <img id="previous" src="./imgs/previous.svg" />
-        <img id="next" src="./imgs/next.svg" />
-      </div>
-    </header>
 
-    <div id="main">
-      <div id="des">
-      </div>
-    </div>
-    <div id="mask">
-      <div class="info">
-        <h3>交互设计大作业</h3>
-        <h2>江南大学校史馆全景展示</h2>
-        <p>张显阳 陈志刚 陈子豪 王德森</p>
-      </div>
-    </div>
-    <script src="./dist/main.js"></script>
-	</body>
+<head>
+	<meta charset="utf-8" />
+	<title>Panoramic Jiangnan</title>
+</head>
+
+<body>
+	<header class="header">
+		<img class="info" src="./imgs/info.svg" onclick="showInfo()" />
+		<div class="space"></div>
+		<div class="control">
+			<img id="previous" src="./imgs/previous.svg" />
+			<img id="next" src="./imgs/next.svg" />
+		</div>
+	</header>
+
+	<div id="main">
+		<div id="des">
+		</div>
+	</div>
+	<div id="mask">
+		<div class="info">
+			<h3>全景漫游</h3>
+			<h2>江南大学校史馆全景展示</h2>
+			<p>嵇晓濛</p>
+		</div>
+	</div>
+	<script src="./dist/main.js"></script>
+</body>
+
 </html>
