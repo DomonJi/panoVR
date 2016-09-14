@@ -1,0 +1,15 @@
+/*
+ * index.css
+ * Copyright (C) 2016 disoul
+ *
+ * Distributed under terms of the MIT license.
+ */
+
+@import "reset";
+@import "header";
+@import "content";
+@import "info";
+
+* {
+  box-sizing: border-box;
+}

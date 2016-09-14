@@ -1,0 +1,31 @@
+/*
+ * _header.css
+ * Copyright (C) 2016 disoul
+ *
+ * Distributed under terms of the MIT license.
+ */
+
+.header {
+  width: 100%;
+  height: 70px;
+  font-size: 40px;
+  color: white;
+  background-color: rgba(0,0,0,.7);
+  top: 0;
+  line-height: 70px;
+  padding-left: 20px;
+  padding-right: 20px;
+  position: absolute;
+
+  display: flex;
+}
+
+.space {
+  flex: 1;
+}
+
+.control {
+  img {
+    cursor: pointer;
+  }
+}

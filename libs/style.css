@@ -1,0 +1,24 @@
+   
+                 
+#container {
+    position: relative;
+    left: 50px;
+    top: 100px;
+    
+}             
+
+#pano { 
+		border: 2px; 
+		border-color: black; 
+		border-style: solid; 
+		cursor: move;}
+
+
+
+
+
+
+
+
+
+

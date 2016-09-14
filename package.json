@@ -1,0 +1,28 @@
+{
+    "name": "pano-homework",
+    "version": "1.0.0",
+    "description": "",
+    "main": " ",
+    "dependencies": {
+        "autoprefixer": "^6.3.6",
+        "css-loader": "^0.23.1",
+        "file-loader": "^0.9.0",
+        "postcss": "^5.0.21",
+        "postcss-loader": "^0.9.1",
+        "precss": "^1.4.0",
+        "style-loader": "^0.13.1",
+        "three": "^0.78.0",
+        "url-loader": "^0.5.7",
+        "webpack": "^2.1.0-beta.5"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": " "
+    },
+    "repository": {
+        "type": "git",
+        "url": " "
+    },
+    "author": "domon",
+    "license": "ISC"
+}
