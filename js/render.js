@@ -11,7 +11,7 @@ console.log(controller);
 var camera,
     scene,
     mesh,
-    guid,
+    jumps = -1,
     element = document.getElementById('main'), // Inject scene into this
     renderer,
     onPointerDownPointerX,
@@ -49,15 +49,16 @@ updateDes(currentScene.des);
 function init() {
     camera = new THREE.PerspectiveCamera(fov, ratio, 1, 1000);
     scene = new THREE.Scene();
-    guid = new THREE.Mesh(new THREE.PlaneGeometry(130, 250, 10, 10), new THREE.MeshBasicMaterial({color: 0x000}));
-    guid.position.x = -300;
-    guid.position.z = 420;
-    guid.position.y = -25;
-    guid.rotation.y = 40;
+    // guid = new THREE.Mesh(new THREE.PlaneGeometry(130, 250, 10, 10), new THREE.MeshBasicMaterial({color: 0x000}));
+    // guid.position.x = -300;
+    // guid.position.z = 420;
+    // guid.position.y = -25;
+    // guid.rotation.y = 40;
     mesh = new THREE.Mesh(new THREE.SphereGeometry(500, 60, 40), new THREE.MeshBasicMaterial({map: texture}));
     mesh.scale.x = -1;
     scene.add(mesh);
-    scene.add(guid);
+    currentScene.jump.forEach((j) => scene.add(j.plane));
+    // scene.add(guid);
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize(width, height);
     element.appendChild(renderer.domElement);
@@ -71,12 +72,9 @@ function init() {
 }
 
 function detectClick(event) {
-    var raycaster = new THREE.Raycaster();
-    event.preventDefault();
-
-    var mouseVector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5);
-    raycaster.setFromCamera(mouseVector, camera);
-    let intersects = raycaster.intersectObject(guid);
+    if (jumps > -1) {
+        controller.jumpScene(jumps);
+    };
 }
 
 function detectMove(event) {
@@ -85,8 +83,15 @@ function detectMove(event) {
 
     var mouseVector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5);
     raycaster.setFromCamera(mouseVector, camera);
-    let intersects = raycaster.intersectObject(guid);
-    if (intersects.length > 0) {
+    jumps = -1;
+    currentScene.jump.forEach(function(j) {
+        let intersects = raycaster.intersectObject(j.plane);
+        if (intersects.length > 0) {
+            jumps = j.jumpto;
+        };
+    });
+    // let intersects = raycaster.intersectObject(guid);
+    if (jumps > -1) {
         //console.log(intersects[0]);
         document.body.style.cursor = "pointer";
     } else
@@ -153,10 +158,11 @@ function render() {
     camera.position.z = 100 * Math.sin(phi) * Math.sin(theta);
     camera.lookAt(scene.position);
     if (currentScene != controller.getCurrentScene()) {
+        currentScene.jump.forEach((j) => scene.remove(j.plane));
         currentScene = controller.getCurrentScene();
         var texture = loader.load(currentScene.path);
         mesh.material = new THREE.MeshBasicMaterial({map: texture});
-
+        currentScene.jump.forEach((j) => scene.add(j.plane));
         updateDes(currentScene.des);
     }
     renderer.render(scene, camera);
