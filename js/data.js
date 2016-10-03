@@ -35,7 +35,7 @@ var jump = [
 ]
 for (var i = 0; i < 10; i++) {
   data.push({
-    path: './panoVR/imgs/' + (i + 1) + '.jpg',
+    path: './' + (i + 1) + '.jpg',
     des: des[i],
     index: i,
     jump: jump[i]
