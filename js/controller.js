@@ -4,44 +4,44 @@
  *
  * Distributed under terms of the MIT license.
  */
-'use strict';
+'use strict'
 
-var data = require('./data');
+var data = require('./data')
 
 function Controller() {
-    var index = 0;
-    this.jumpScene = function(n) {
-        index = n;
-    };
-    this.getCurrentScene = function() {
-        return data[index];
-    };
+  var index = 0
+  this.jumpScene = function(n) {
+    index = n
+  }
+  this.getCurrentScene = function() {
+    return data[index]
+  }
 
-    this.toNextScene = function() {
-        if (index == data.length - 1) {
-            index = index;
-        } else {
-            index = index + 1;
-        }
-    };
+  this.toNextScene = function() {
+    if (index == data.length - 1) {
+      index = index
+    } else {
+      index = index + 1
+    }
+  }
 
-    this.toPreviousScene = function() {
-        if (index == 0) {
-            index = 0;
-        } else {
-            index = index - 1;
-        }
-    };
+  this.toPreviousScene = function() {
+    if (index == 0) {
+      index = 0
+    } else {
+      index = index - 1
+    }
+  }
 }
 
-var controller = new Controller();
+var controller = new Controller()
 
 document.getElementById('next').addEventListener('click', function(e) {
-    controller.toNextScene();
-});
+  controller.toNextScene()
+})
 
 document.getElementById('previous').addEventListener('click', function(e) {
-    controller.toPreviousScene();
-});
+  controller.toPreviousScene()
+})
 
-module.exports = controller;
+module.exports = controller

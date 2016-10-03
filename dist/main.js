@@ -41947,187 +41947,181 @@ THREE.MorphBlendMesh.prototype.update = function ( delta ) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/*
- * render.js
- * Copyright (C) 2016 disoul <disoul@disoul-surface>
- *
- * Distributed under terms of the MIT license.
- */
 'use strict';
 var THREE = __webpack_require__(0);
 var controller = __webpack_require__(4);
 console.log(controller);
 var camera,
-    scene,
-    mesh,
-    jumps = -1,
-    element = document.getElementById('main'), // Inject scene into this
-    renderer,
-    onPointerDownPointerX,
-    onPointerDownPointerY,
-    onPointerDownLon,
-    onPointerDownLat,
-    fov = 70, // Field of View
-    isUserInteracting = false,
-    lon = 0,
-    lat = 0,
-    phi = 0,
-    theta = 0,
-    onMouseDownMouseX = 0,
-    onMouseDownMouseY = 0,
-    onMouseDownLon = 0,
-    onMouseDownLat = 0,
-    currentScene = controller.getCurrentScene(),
-    width = window.innerWidth,
-    height = window.innerHeight,
-    ratio = width / height;
+  scene,
+  mesh,
+  jumps = -1,
+  element = document.getElementById('main'), // Inject scene into this
+  renderer,
+  onPointerDownPointerX,
+  onPointerDownPointerY,
+  onPointerDownLon,
+  onPointerDownLat,
+  fov = 70, // Field of View
+  isUserInteracting = false,
+  lon = 0,
+  lat = 0,
+  phi = 0,
+  theta = 0,
+  onMouseDownMouseX = 0,
+  onMouseDownMouseY = 0,
+  onMouseDownLon = 0,
+  onMouseDownLat = 0,
+  currentScene = controller.getCurrentScene(),
+  width = window.innerWidth,
+  height = window.innerHeight,
+  ratio = width / height
 
 var loader = new THREE.TextureLoader();
 var texture = loader.load(currentScene.path, function() {
-    init();
-    animate();
+  init();
+  animate();
 }, function(xhr) {
-    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+  console.log((xhr.loaded / xhr.total * 100) + '% loaded');
 },
 // Function called when download errors
 function(xhr) {
-    console.log('An error happened');
+  console.log('An error happened');
 });
 updateDes(currentScene.des);
 
 function init() {
-    camera = new THREE.PerspectiveCamera(fov, ratio, 1, 1000);
-    scene = new THREE.Scene();
-    // guid = new THREE.Mesh(new THREE.PlaneGeometry(130, 250, 10, 10), new THREE.MeshBasicMaterial({color: 0x000}));
-    // guid.position.x = -300;
-    // guid.position.z = 420;
-    // guid.position.y = -25;
-    // guid.rotation.y = 40;
-    mesh = new THREE.Mesh(new THREE.SphereGeometry(500, 60, 40), new THREE.MeshBasicMaterial({map: texture}));
-    mesh.scale.x = -1;
-    scene.add(mesh);
-    currentScene.jump.forEach((j) => scene.add(j.plane));
-    // scene.add(guid);
-    renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.setSize(width, height);
-    element.appendChild(renderer.domElement);
-    element.addEventListener('mousedown', onDocumentMouseDown, false);
-    element.addEventListener('mousewheel', onDocumentMouseWheel, false);
-    element.addEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
-    window.addEventListener('resize', onWindowResized, false);
-    document.addEventListener('mousedown', detectClick, false);
-    document.addEventListener('mousemove', detectMove, false);
-    onWindowResized(null);
+  camera = new THREE.PerspectiveCamera(fov, ratio, 1, 1000);
+  scene = new THREE.Scene();
+  // guid = new THREE.Mesh(new THREE.PlaneGeometry(130, 250, 10, 10), new THREE.MeshBasicMaterial({color: 0x000}));
+  // guid.position.x = -300;
+  // guid.position.z = 420;
+  // guid.position.y = -25;
+  // guid.rotation.y = 40;
+  mesh = new THREE.Mesh(new THREE.SphereGeometry(500, 60, 40), new THREE.MeshBasicMaterial({map: texture}));
+  mesh.scale.x = -1;
+  scene.add(mesh);
+  currentScene.jump.forEach((j) => scene.add(j.plane));
+  // scene.add(guid);
+  renderer = new THREE.WebGLRenderer({antialias: true});
+  renderer.setSize(width, height);
+  element.appendChild(renderer.domElement);
+  element.addEventListener('mousedown', onDocumentMouseDown, false);
+  element.addEventListener('mousewheel', onDocumentMouseWheel, false);
+  element.addEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
+  window.addEventListener('resize', onWindowResized, false);
+  document.addEventListener('mouseup', detectClick, false);
+  document.addEventListener('mousemove', detectMove, false);
+  onWindowResized(null);
 }
 
 function detectClick(event) {
-    if (jumps > -1) {
-        controller.jumpScene(jumps);
-    };
+  if (jumps > -1) {
+    controller.jumpScene(jumps);
+  };
 }
 
 function detectMove(event) {
-    var raycaster = new THREE.Raycaster();
-    event.preventDefault();
+  var raycaster = new THREE.Raycaster();
+  event.preventDefault();
 
-    var mouseVector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5);
-    raycaster.setFromCamera(mouseVector, camera);
-    jumps = -1;
-    currentScene.jump.forEach(function(j) {
-        let intersects = raycaster.intersectObject(j.plane);
-        if (intersects.length > 0) {
-            jumps = j.jumpto;
-        };
-    });
-    // let intersects = raycaster.intersectObject(guid);
-    if (jumps > -1) {
-        //console.log(intersects[0]);
-        document.body.style.cursor = "pointer";
-    } else
-        document.body.style.cursor = "default";
-    }
+  var mouseVector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5);
+  raycaster.setFromCamera(mouseVector, camera);
+  jumps = -1;
+  currentScene.jump.forEach(function(j) {
+    let intersects = raycaster.intersectObject(j.plane);
+    if (intersects.length > 0) {
+      jumps = j.jumpto;
+    };
+  });
+  // let intersects = raycaster.intersectObject(guid);
+  if (jumps > -1) {
+    //console.log(intersects[0]);
+    document.body.style.cursor = "pointer";
+  } else
+    document.body.style.cursor = "default";
+  }
 ;
 
 function onWindowResized(event) {
-    //  renderer.setSize(window.innerWidth, window.innerHeight);
-    //  camer?a.projectionMatrix.makePerspective(fov, window.innerWidth / window.innerHeight, 1, 1100);
-    renderer.setSize(width, height);
-    camera.projectionMatrix.makePerspective(fov, ratio, 1, 1100);
+  //  renderer.setSize(window.innerWidth, window.innerHeight);
+  //  camer?a.projectionMatrix.makePerspective(fov, window.innerWidth / window.innerHeight, 1, 1100);
+  renderer.setSize(width, height);
+  camera.projectionMatrix.makePerspective(fov, ratio, 1, 1100);
 }
 
 function onDocumentMouseDown(event) {
-    event.preventDefault();
-    onPointerDownPointerX = event.clientX;
-    onPointerDownPointerY = event.clientY;
-    onPointerDownLon = lon;
-    onPointerDownLat = lat;
-    isUserInteracting = true;
-    element.addEventListener('mousemove', onDocumentMouseMove, false);
-    element.addEventListener('mouseup', onDocumentMouseUp, false);
+  event.preventDefault();
+  onPointerDownPointerX = event.clientX;
+  onPointerDownPointerY = event.clientY;
+  onPointerDownLon = lon;
+  onPointerDownLat = lat;
+  isUserInteracting = true;
+  element.addEventListener('mousemove', onDocumentMouseMove, false);
+  element.addEventListener('mouseup', onDocumentMouseUp, false);
 }
 function onDocumentMouseMove(event) {
-    lon = (event.clientX - onPointerDownPointerX) * -0.175 + onPointerDownLon;
-    lat = (event.clientY - onPointerDownPointerY) * -0.175 + onPointerDownLat;
+  lon = (event.clientX - onPointerDownPointerX) * -0.175 + onPointerDownLon;
+  lat = (event.clientY - onPointerDownPointerY) * -0.175 + onPointerDownLat;
 }
 function onDocumentMouseUp(event) {
-    isUserInteracting = false;
-    element.removeEventListener('mousemove', onDocumentMouseMove, false);
-    element.removeEventListener('mouseup', onDocumentMouseUp, false);
+  isUserInteracting = false;
+  element.removeEventListener('mousemove', onDocumentMouseMove, false);
+  element.removeEventListener('mouseup', onDocumentMouseUp, false);
 }
 function onDocumentMouseWheel(event) {
-    // WebKit
-    if (event.wheelDeltaY) {
-        fov -= event.wheelDeltaY * 0.05;
-        // Opera / Explorer 9
-    } else if (event.wheelDelta) {
-        fov -= event.wheelDelta * 0.05;
-        // Firefox
-    } else if (event.detail) {
-        fov += event.detail * 1.0;
-    }
-    if (fov < 45 || fov > 90) {
-        fov = (fov < 45)
-            ? 45
-            : 90;
-    }
-    camera.projectionMatrix.makePerspective(fov, ratio, 1, 1100);
+  // WebKit
+  if (event.wheelDeltaY) {
+    fov -= event.wheelDeltaY * 0.05;
+    // Opera / Explorer 9
+  } else if (event.wheelDelta) {
+    fov -= event.wheelDelta * 0.05;
+    // Firefox
+  } else if (event.detail) {
+    fov += event.detail * 1.0;
+  }
+  if (fov < 45 || fov > 90) {
+    fov = (fov < 45)
+      ? 45
+      : 90;
+  }
+  camera.projectionMatrix.makePerspective(fov, ratio, 1, 1100);
 }
 
 function animate() {
-    requestAnimationFrame(animate);
-    render();
+  requestAnimationFrame(animate);
+  render();
 }
 
 function render() {
-    lat = Math.max(-85, Math.min(85, lat));
-    phi = THREE.Math.degToRad(90 - lat);
-    theta = THREE.Math.degToRad(lon);
-    camera.position.x = 100 * Math.sin(phi) * Math.cos(theta);
-    camera.position.y = 100 * Math.cos(phi);
-    camera.position.z = 100 * Math.sin(phi) * Math.sin(theta);
-    camera.lookAt(scene.position);
-    if (currentScene != controller.getCurrentScene()) {
-        currentScene.jump.forEach((j) => scene.remove(j.plane));
-        currentScene = controller.getCurrentScene();
-        var texture = loader.load(currentScene.path);
-        mesh.material = new THREE.MeshBasicMaterial({map: texture});
-        currentScene.jump.forEach((j) => scene.add(j.plane));
-        updateDes(currentScene.des);
-    }
-    renderer.render(scene, camera);
+  lat = Math.max(-55, Math.min(55, lat));
+  phi = THREE.Math.degToRad(90 - lat);
+  theta = THREE.Math.degToRad(lon);
+  camera.position.x = 100 * Math.sin(phi) * Math.cos(theta);
+  camera.position.y = 100 * Math.cos(phi);
+  camera.position.z = 100 * Math.sin(phi) * Math.sin(theta);
+  camera.lookAt(scene.position);
+  if (currentScene != controller.getCurrentScene()) {
+    currentScene.jump.forEach((j) => scene.remove(j.plane));
+    currentScene = controller.getCurrentScene();
+    var texture = loader.load(currentScene.path);
+    mesh.material = new THREE.MeshBasicMaterial({map: texture});
+    currentScene.jump.forEach((j) => scene.add(j.plane));
+    updateDes(currentScene.des);
+  }
+  renderer.render(scene, camera);
 }
 
 function updateDes(des) {
-    if (des == undefined) {
-        return;
-    }
+  if (des == undefined) {
+    return;
+  }
 
-    window.desNode = document.getElementById('des');
-    desNode.removeChild(desNode.childNodes[0]);
-    desNode.appendChild(document.createTextNode(des));
+  window.desNode = document.getElementById('des');
+  desNode.removeChild(desNode.childNodes[0]);
+  desNode.appendChild(document.createTextNode(des));
 
-    desNode.style.opacity = 1;
-    window.setTimeout('desNode.style.opacity = 0', 5000);
+  desNode.style.opacity = 1;
+  window.setTimeout('desNode.style.opacity = 0', 5000);
 }
 
 
@@ -43169,47 +43163,47 @@ if(false) {
  *
  * Distributed under terms of the MIT license.
  */
-'use strict';
+'use strict'
 
-var data = __webpack_require__(5);
+var data = __webpack_require__(5)
 
 function Controller() {
-    var index = 0;
-    this.jumpScene = function(n) {
-        index = n;
-    };
-    this.getCurrentScene = function() {
-        return data[index];
-    };
+  var index = 0
+  this.jumpScene = function(n) {
+    index = n
+  }
+  this.getCurrentScene = function() {
+    return data[index]
+  }
 
-    this.toNextScene = function() {
-        if (index == data.length - 1) {
-            index = index;
-        } else {
-            index = index + 1;
-        }
-    };
+  this.toNextScene = function() {
+    if (index == data.length - 1) {
+      index = index
+    } else {
+      index = index + 1
+    }
+  }
 
-    this.toPreviousScene = function() {
-        if (index == 0) {
-            index = 0;
-        } else {
-            index = index - 1;
-        }
-    };
+  this.toPreviousScene = function() {
+    if (index == 0) {
+      index = 0
+    } else {
+      index = index - 1
+    }
+  }
 }
 
-var controller = new Controller();
+var controller = new Controller()
 
 document.getElementById('next').addEventListener('click', function(e) {
-    controller.toNextScene();
-});
+  controller.toNextScene()
+})
 
 document.getElementById('previous').addEventListener('click', function(e) {
-    controller.toPreviousScene();
-});
+  controller.toPreviousScene()
+})
 
-module.exports = controller;
+module.exports = controller
 
 
 /***/ },
@@ -43223,45 +43217,45 @@ module.exports = controller;
  *
  * Distributed under terms of the MIT license.
  */
-'use strict';
-var THREE = __webpack_require__(0);
-var data = [];
+'use strict'
+var THREE = __webpack_require__(0)
+var data = []
 
-var des = ['欢迎来到江南大学校史馆全景展示，通过鼠标来移动和缩放，通过点击上方按钮进行翻页', '这里展示了江南大学多年来的变化和历史', '这里是我们美丽校区的模型', '好了我编不下去了...'];
+var des = ['欢迎来到江南大学校史馆全景展示，通过鼠标来移动和缩放，通过点击上方按钮进行翻页', '这里展示了江南大学多年来的变化和历史', '这里是我们美丽校区的模型', '好了我编不下去了...']
 var jump = [
-    [
-        {
-            plane: (function() {
-                let plane = new THREE.Mesh(new THREE.PlaneGeometry(140, 250, 1, 1), new THREE.MeshBasicMaterial({color: 0x000}));
-                plane.position.x = -240;
-                plane.position.z = 300;
-                plane.position.y = -25;
-                plane.rotation.y = 40;
-                return plane;
-            })(),
-            jumpto: 1
-        }
-    ],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    []
-];
+  [
+    {
+      plane: (function() {
+        let plane = new THREE.Mesh(new THREE.PlaneGeometry(140, 250, 1, 1), new THREE.MeshBasicMaterial({color: 0x000}))
+        plane.position.x = -350
+        plane.position.z = 420
+        plane.position.y = -25
+        plane.rotation.y = 40
+        return plane
+      })(),
+      jumpto: 1
+    }
+  ],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  [],
+  []
+]
 for (var i = 0; i < 10; i++) {
-    data.push({
-        path: '../imgs/' + (i + 1) + '.jpg',
-        des: des[i],
-        index: i,
-        jump: jump[i]
-    });
+  data.push({
+    path: '../imgs/' + (i + 1) + '.jpg',
+    des: des[i],
+    index: i,
+    jump: jump[i]
+  })
 }
 
-module.exports = data;
+module.exports = data
 
 
 /***/ },
@@ -43597,34 +43591,32 @@ function updateLink(linkElement, obj) {
  *
  * Distributed under terms of the MIT license.
  */
-'use strict';
+'use strict'
 
-__webpack_require__(2);
-__webpack_require__(1);
-__webpack_require__(3);
-
+__webpack_require__(2)
+__webpack_require__(1)
+__webpack_require__(3)
 
 // css动画实现淡入淡出
 window.showInfo = function() {
-  mask = document.getElementById('mask');
-  mask.style.display = 'flex';
+  mask = document.getElementById('mask')
+  mask.style.display = 'flex'
   window.setTimeout('mask.style.opacity = 1;', 1); // fix
 
   mask.addEventListener('click', function() {
-    mask.style.opacity = 0;
+    mask.style.opacity = 0
   })
 
-  var onTransitionEnd = function (e){
-    if (mask.style.opacity == 0) {
-      mask.style.display = 'none';
-    }
-  }
-  , eventName = document.body.style.webkitBorderRadius?
-          "webkitTransitionEnd":
-          "transitionend"
-  ;
-  
-  mask.addEventListener( eventName, onTransitionEnd, false );
+  var onTransitionEnd = function(e) {
+      if (mask.style.opacity == 0) {
+        mask.style.display = 'none'
+      }
+    },
+    eventName = document.body.style.webkitBorderRadius
+      ? "webkitTransitionEnd"
+      : "transitionend";
+
+  mask.addEventListener(eventName, onTransitionEnd, false)
 }
 
 
