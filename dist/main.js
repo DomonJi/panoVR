@@ -41976,27 +41976,38 @@ var camera,
   height = window.innerHeight,
   ratio = width / height
 
-var loader = new THREE.TextureLoader();
-var texture = loader.load(currentScene.path, function() {
+var cachedLoader = function(progress, error) {
+  var cached = []
+  return function(currentScene, cb) {
+    let tex = cached[currentScene.index]
+    if (tex === undefined) {
+      let loader = new THREE.TextureLoader()
+      tex = loader.load(currentScene.path, cb, progress, error)
+      cached[currentScene.index] = tex
+    } else {
+      console.log('cached');
+      cb && cb()
+    }
+    return tex
+  }
+}
+
+var cachedLoad = cachedLoader(function(xhr) {
+  console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+}, function(xhr) {
+  console.log('An error happened');
+})
+
+var texture = cachedLoad(currentScene, function() {
   init();
   animate();
-}, function(xhr) {
-  console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-},
-// Function called when download errors
-function(xhr) {
-  console.log('An error happened');
-});
+})
+
 updateDes(currentScene.des);
 
 function init() {
   camera = new THREE.PerspectiveCamera(fov, ratio, 1, 1000);
   scene = new THREE.Scene();
-  // guid = new THREE.Mesh(new THREE.PlaneGeometry(130, 250, 10, 10), new THREE.MeshBasicMaterial({color: 0x000}));
-  // guid.position.x = -300;
-  // guid.position.z = 420;
-  // guid.position.y = -25;
-  // guid.rotation.y = 40;
   mesh = new THREE.Mesh(new THREE.SphereGeometry(500, 60, 40), new THREE.MeshBasicMaterial({map: texture}));
   mesh.scale.x = -1;
   scene.add(mesh);
@@ -42009,15 +42020,27 @@ function init() {
   element.addEventListener('mousewheel', onDocumentMouseWheel, false);
   element.addEventListener('DOMMouseScroll', onDocumentMouseWheel, false);
   window.addEventListener('resize', onWindowResized, false);
-  document.addEventListener('mouseup', detectClick, false);
+  document.addEventListener('mousedown', detectClick, false);
+  document.addEventListener('mouseup', detectClickUp, false);
   document.addEventListener('mousemove', detectMove, false);
   onWindowResized(null);
 }
-
-function detectClick(event) {
-  if (jumps > -1) {
+var canjump = false;
+function detectClickUp(event) {
+  if (jumps > -1 && canjump) {
     controller.jumpScene(jumps);
-  };
+    canjump = false;
+  } else {
+    canjump = false
+  }
+}
+
+function detectClick(e) {
+  if (jumps > -1) {
+    canjump = true
+  } else {
+    canjump = false
+  }
 }
 
 function detectMove(event) {
@@ -42093,7 +42116,8 @@ function animate() {
 }
 
 function render() {
-  lat = Math.max(-55, Math.min(55, lat));
+  // lat = Math.max(-5, Math.min(5, lat));
+  lat = 0
   phi = THREE.Math.degToRad(90 - lat);
   theta = THREE.Math.degToRad(lon);
   camera.position.x = 100 * Math.sin(phi) * Math.cos(theta);
@@ -42103,7 +42127,7 @@ function render() {
   if (currentScene != controller.getCurrentScene()) {
     currentScene.jump.forEach((j) => scene.remove(j.plane));
     currentScene = controller.getCurrentScene();
-    var texture = loader.load(currentScene.path);
+    var texture = cachedLoad(currentScene)
     mesh.material = new THREE.MeshBasicMaterial({map: texture});
     currentScene.jump.forEach((j) => scene.add(j.plane));
     updateDes(currentScene.des);
