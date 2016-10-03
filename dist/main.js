@@ -43272,7 +43272,7 @@ var jump = [
 ]
 for (var i = 0; i < 10; i++) {
   data.push({
-    path: '../imgs/' + (i + 1) + '.jpg',
+    path: './imgs/' + (i + 1) + '.jpg',
     des: des[i],
     index: i,
     jump: jump[i]
