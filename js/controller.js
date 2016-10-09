@@ -16,7 +16,9 @@ function Controller() {
   this.getCurrentScene = function() {
     return data[index]
   }
-
+  this.getJumpScene = (index) => {
+    return data[index]
+  }
   this.toNextScene = function() {
     if (index == data.length - 1) {
       index = index

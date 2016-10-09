@@ -5,7 +5,7 @@
  * Distributed under terms of the MIT license.
  */
 'use strict'
-var THREE = require('three')
+import THREE from 'three'
 var data = []
 
 var des = ['欢迎来到江南大学校史馆全景展示，通过鼠标来移动和缩放，通过点击上方按钮进行翻页', '这里展示了江南大学多年来的变化和历史', '这里是我们美丽校区的模型', '好了我编不下去了...']

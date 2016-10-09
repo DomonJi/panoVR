@@ -1,7 +1,6 @@
-'use strict';
-var THREE = require('three');
-var controller = require('./controller');
-console.log(controller);
+'use strict'
+import THREE from 'three'
+import controller from './controller'
 var camera,
   scene,
   mesh,
@@ -27,20 +26,44 @@ var camera,
   height = window.innerHeight,
   ratio = width / height
 
-var cachedLoader = function(progress, error) {
+const cachedLoader = (progress, error) => {
   var cached = []
-  return function(currentScene, cb) {
-    let tex = cached[currentScene.index]
-    if (tex === undefined) {
-      let loader = new THREE.TextureLoader()
-      tex = loader.load(currentScene.path, cb, progress, error)
-      cached[currentScene.index] = tex
-    } else {
-      console.log('cached');
-      cb && cb()
-    }
-    return tex
+  var loader = new THREE.TextureLoader()
+  return (currentScene, cb) => {
+    return new Promise((resolve, reject) => {
+      let tex = cached[currentScene.index]
+      if (tex === undefined) {
+        tex = loader.load(currentScene.path, () => {}, progress, error)
+        cached[currentScene.index] = tex
+      } else {
+        console.log('cached')
+      }
+      resolve(tex)
+    }).then(cb).then(() => {
+      currentScene.jump.forEach((j) => {
+        if (cached[j.jumpto] === undefined) {
+          cached[j.jumpto] = loader.load(controller.getJumpScene(j.jumpto).path)
+        }
+      })
+    })
   }
+}
+
+const initTexCb = (tex) => {
+  return new Promise((res, rej) => {
+    init(tex)
+    animate()
+    res()
+  })
+}
+
+const texCb = (tex) => {
+  return new Promise((res, rej) => {
+    mesh.material = new THREE.MeshBasicMaterial({map: tex})
+    currentScene.jump.forEach((j) => scene.add(j.plane))
+    updateDes(currentScene.des)
+    res()
+  })
 }
 
 var cachedLoad = cachedLoader(function(xhr) {
@@ -49,14 +72,11 @@ var cachedLoad = cachedLoader(function(xhr) {
   console.log('An error happened');
 })
 
-var texture = cachedLoad(currentScene, function() {
-  init();
-  animate();
-})
+cachedLoad(currentScene, initTexCb)
 
-updateDes(currentScene.des);
+updateDes(currentScene.des)
 
-function init() {
+function init(texture) {
   camera = new THREE.PerspectiveCamera(fov, ratio, 1, 1000);
   scene = new THREE.Scene();
   mesh = new THREE.Mesh(new THREE.SphereGeometry(500, 60, 40), new THREE.MeshBasicMaterial({map: texture}));
@@ -167,8 +187,8 @@ function animate() {
 }
 
 function render() {
-  // lat = Math.max(-5, Math.min(5, lat));
-  lat = 0
+  lat = Math.max(-85, Math.min(85, lat));
+  // lat = 0
   phi = THREE.Math.degToRad(90 - lat);
   theta = THREE.Math.degToRad(lon);
   camera.position.x = 100 * Math.sin(phi) * Math.cos(theta);
@@ -178,10 +198,9 @@ function render() {
   if (currentScene != controller.getCurrentScene()) {
     currentScene.jump.forEach((j) => scene.remove(j.plane));
     currentScene = controller.getCurrentScene();
-    var texture = cachedLoad(currentScene)
-    mesh.material = new THREE.MeshBasicMaterial({map: texture});
-    currentScene.jump.forEach((j) => scene.add(j.plane));
-    updateDes(currentScene.des);
+    console.log(currentScene)
+    cachedLoad(currentScene, texCb)
+
   }
   renderer.render(scene, camera);
 }
