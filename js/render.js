@@ -115,19 +115,21 @@ function detectClick(e) {
 }
 
 function detectMove(event) {
-  var raycaster = new THREE.Raycaster();
+  let raycaster = new THREE.Raycaster();
   event.preventDefault();
 
-  var mouseVector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5);
+  let mouseVector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5);
   raycaster.setFromCamera(mouseVector, camera);
   jumps = -1;
   currentScene.jump.forEach(function(j) {
-    let intersects = raycaster.intersectObject(j.plane);
+    let intersects = raycaster.intersectObject(j.plane)
     if (intersects.length > 0) {
-      jumps = j.jumpto;
+      jumps = j.jumpto
     };
+
   });
-  // let intersects = raycaster.intersectObject(guid);
+  // let intersect2 = raycaster.intersectObjects(scene.children, true)
+  // console.log(intersect2);
   if (jumps > -1) {
     //console.log(intersects[0]);
     document.body.style.cursor = "pointer";
