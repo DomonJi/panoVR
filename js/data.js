@@ -80,18 +80,44 @@ var jump = [
     {
       plane: (function() {
         let plane = new THREE.Mesh(new THREE.PlaneGeometry(140, 250, 1, 1), new THREE.MeshBasicMaterial({color: 0x000}))
-        plane.position.x = 300
-        plane.position.z = -200
-        plane.position.y = -300
-        plane.rotation.y = 75
-        plane.rotation.x = -27
+        plane.position.x = -510
+        plane.position.z = 0
+        plane.position.y = -490
+        plane.rotation.y = 0
+        plane.rotation.x = -45
         plane.rotation.z = 90
         return plane
       })(),
       jumpto: 2
+    }, {
+      plane: (function() {
+        let plane = new THREE.Mesh(new THREE.PlaneGeometry(140, 250, 1, 1), new THREE.MeshBasicMaterial({color: 0x000}))
+        plane.position.x = -190
+        plane.position.z = 590
+        plane.position.y = -300
+        plane.rotation.y = 0
+        plane.rotation.x = 135
+        plane.rotation.z = 0
+        return plane
+      })(),
+      jumpto: 4
     }
   ],
-  [],
+  [
+    {
+      plane: (function() {
+        let plane = new THREE.Mesh(new THREE.PlaneGeometry(140, 250, 1, 1), new THREE.MeshBasicMaterial({color: 0x000}))
+        plane.position.x = -380
+        plane.position.z = -380
+        plane.position.y = -250
+        plane.rotation.y = 0
+        plane.rotation.x = -45
+        plane.rotation.z = 0
+        return plane
+      })(),
+      jumpto: 3
+    }
+  ],
   [],
   [],
   [],
