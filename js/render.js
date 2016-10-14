@@ -202,7 +202,8 @@ function render() {
     currentScene = controller.getCurrentScene();
     console.log(currentScene)
     cachedLoad(currentScene, texCb)
-
+    lon = 0
+    lat = 0
   }
   renderer.render(scene, camera);
 }
