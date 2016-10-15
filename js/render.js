@@ -189,8 +189,8 @@ function animate() {
 }
 
 function render() {
-  lat = Math.max(-85, Math.min(85, lat));
-  // lat = 0
+  // lat = Math.max(-85, Math.min(85, lat));
+  lat = 0
   phi = THREE.Math.degToRad(90 - lat);
   theta = THREE.Math.degToRad(lon);
   camera.position.x = 100 * Math.sin(phi) * Math.cos(theta);
