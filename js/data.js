@@ -116,9 +116,32 @@ var jump = [
         return plane
       })(),
       jumpto: 3
+    }, {
+      plane: (function() {
+        let plane = new THREE.Mesh(new THREE.SphereGeometry(70, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
+        plane.position.x = 220
+        plane.position.z = 500
+        plane.position.y = -250
+        plane.rotation.y = -180
+        plane.rotation.x = 145
+        plane.rotation.z = 149
+        return plane
+      })(),
+      jumpto: 5
     }
   ],
-  [],
+  [
+    {
+      plane: (function() {
+        let plane = new THREE.Mesh(new THREE.SphereGeometry(70, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
+        plane.position.x = 120
+        plane.position.z = -300
+        plane.position.y = -150
+        return plane
+      })(),
+      jumpto: 5
+    }
+  ],
   [],
   [],
   [],
