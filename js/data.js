@@ -151,12 +151,46 @@ var jump = [
   [],
   []
 ]
+var latConstrains = [
+  15,
+  15,
+  5,
+  10,
+  1,
+  1,
+  10,
+  5,
+  10,
+  10,
+  5,
+  5,
+  15,
+  15
+]
+var fovMaxs = [
+  70,
+  70,
+  70,
+  70,
+  70,
+  50,
+  70,
+  70,
+  70,
+  70,
+  70,
+  70,
+  70,
+  70
+]
 for (var i = 0; i < 14; i++) {
   data.push({
     path: './imgs/' + (i + 1) + '.jpg',
     des: des[i],
     index: i,
-    jump: jump[i]
+    jump: jump[i],
+    latConstrain: latConstrains[i],
+    fovMax: fovMaxs[i]
   })
 }
 

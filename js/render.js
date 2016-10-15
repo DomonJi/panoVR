@@ -11,7 +11,6 @@ var camera,
   onPointerDownPointerY,
   onPointerDownLon,
   onPointerDownLat,
-  fov = 70, // Field of View
   isUserInteracting = false,
   lon = 0,
   lat = 0,
@@ -22,6 +21,7 @@ var camera,
   onMouseDownLon = 0,
   onMouseDownLat = 0,
   currentScene = controller.getCurrentScene(),
+  fov = currentScene.fovMax,
   width = window.innerWidth,
   height = window.innerHeight,
   ratio = width / height
@@ -175,10 +175,10 @@ function onDocumentMouseWheel(event) {
   } else if (event.detail) {
     fov += event.detail * 1.0;
   }
-  if (fov < 45 || fov > 90) {
+  if (fov < 45 || fov > currentScene.fovMax) {
     fov = (fov < 45)
       ? 45
-      : 90;
+      : currentScene.fovMax;
   }
   camera.projectionMatrix.makePerspective(fov, ratio, 1, 1100);
 }
@@ -189,8 +189,8 @@ function animate() {
 }
 
 function render() {
-  // lat = Math.max(-85, Math.min(85, lat));
-  lat = 0
+  lat = Math.max(-currentScene.latConstrain, Math.min(currentScene.latConstrain, lat));
+  // lat = 0
   phi = THREE.Math.degToRad(90 - lat);
   theta = THREE.Math.degToRad(lon);
   camera.position.x = 100 * Math.sin(phi) * Math.cos(theta);
@@ -204,6 +204,8 @@ function render() {
     cachedLoad(currentScene, texCb)
     lon = 0
     lat = 0
+    fov = currentScene.fovMax
+    camera.projectionMatrix.makePerspective(fov, ratio, 1, 1100)
   }
   renderer.render(scene, camera);
 }
