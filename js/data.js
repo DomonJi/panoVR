@@ -134,12 +134,12 @@ var jump = [
     {
       plane: (function() {
         let plane = new THREE.Mesh(new THREE.SphereGeometry(70, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
-        plane.position.x = 120
-        plane.position.z = -300
-        plane.position.y = -150
+        plane.position.x = 350
+        plane.position.z = -380
+        plane.position.y = -250
         return plane
       })(),
-      jumpto: 5
+      jumpto: 4
     }
   ],
   [],
@@ -183,14 +183,30 @@ var fovMaxs = [
   70,
   70
 ]
+var fields = [
+  4,
+  4,
+  4,
+  3,
+  3,
+  3,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  2,
+  2
+]
 for (var i = 0; i < 14; i++) {
   data.push({
     path: './imgs/' + (i + 1) + '.jpg',
-    des: des[i],
     index: i,
     jump: jump[i],
     latConstrain: latConstrains[i],
-    fovMax: fovMaxs[i]
+    fovMax: fovMaxs[i],
+    field: fields[i]
   })
 }
 

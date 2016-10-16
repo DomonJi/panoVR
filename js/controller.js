@@ -38,12 +38,12 @@ function Controller() {
 
 var controller = new Controller()
 
-document.getElementById('next').addEventListener('click', function(e) {
-  controller.toNextScene()
-})
-
-document.getElementById('previous').addEventListener('click', function(e) {
-  controller.toPreviousScene()
-})
+// document.getElementById('next').addEventListener('click', function(e) {
+//   controller.toNextScene()
+// })
+//
+// document.getElementById('previous').addEventListener('click', function(e) {
+//   controller.toPreviousScene()
+// })
 
 module.exports = controller

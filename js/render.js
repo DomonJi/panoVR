@@ -16,6 +16,7 @@ var camera,
   lat = 0,
   phi = 0,
   theta = 0,
+  field = 4,
   onMouseDownMouseX = 0,
   onMouseDownMouseY = 0,
   onMouseDownLon = 0,
@@ -99,8 +100,8 @@ function init(texture) {
 var canjump = false;
 function detectClickUp(event) {
   if (jumps > -1 && canjump) {
-    controller.jumpScene(jumps);
-    canjump = false;
+    controller.jumpScene(jumps)
+    canjump = false
   } else {
     canjump = false
   }
@@ -200,6 +201,9 @@ function render() {
   if (currentScene != controller.getCurrentScene()) {
     currentScene.jump.forEach((j) => scene.remove(j.plane));
     currentScene = controller.getCurrentScene();
+    if (currentScene.field !== field) {
+      eval('changeImage' + currentScene.field + '()')
+    }
     console.log(currentScene)
     cachedLoad(currentScene, texCb)
     lon = 0
@@ -211,14 +215,130 @@ function render() {
 }
 
 function updateDes(des) {
-  if (des == undefined) {
-    return;
+  // if (des == undefined) {
+  //   return;
+  // }
+  //
+  // window.desNode = document.getElementById('des');
+  // desNode.removeChild(desNode.childNodes[0]);
+  // desNode.appendChild(document.createTextNode(des));
+  //
+  // desNode.style.opacity = 1;
+  // window.setTimeout('desNode.style.opacity = 0', 5000);
+}
+
+function changeImage0() {
+  field = 0
+  document.getElementById("Image1").src = "./images/4_cc.jpg";
+  document.getElementById("Image2").src = "./images/3.jpg";
+  document.getElementById("Image3").src = "./images/2.jpg";
+  document.getElementById("Image4").src = "./images/1.jpg";
+  document.getElementById("Image5").src = "./images/0.jpg";
+  controller.jumpScene(8)
+}
+
+function changeImage1() {
+  field = 1
+  document.getElementById("Image2").src = "./images/3_cc.jpg";
+  document.getElementById("Image1").src = "./images/4.jpg";
+  document.getElementById("Image3").src = "./images/2.jpg";
+  document.getElementById("Image4").src = "./images/1.jpg";
+  document.getElementById("Image5").src = "./images/0.jpg";
+  controller.jumpScene(6)
+}
+
+function changeImage2() {
+  field = 2
+  document.getElementById("Image3").src = "./images/2_cc.jpg";
+  document.getElementById("Image1").src = "./images/4.jpg";
+  document.getElementById("Image2").src = "./images/3.jpg";
+  document.getElementById("Image4").src = "./images/1.jpg";
+  document.getElementById("Image5").src = "./images/0.jpg";
+  controller.jumpScene(12)
+}
+
+function changeImage3() {
+  field = 3
+  document.getElementById("Image4").src = "./images/1_cc.jpg";
+  document.getElementById("Image1").src = "./images/4.jpg";
+  document.getElementById("Image3").src = "./images/2.jpg";
+  document.getElementById("Image2").src = "./images/3.jpg";
+  document.getElementById("Image5").src = "./images/0.jpg";
+  controller.jumpScene(3)
+}
+
+function changeImage4() {
+  field = 4
+  document.getElementById("Image5").src = "./images/0_cc.jpg";
+  document.getElementById("Image1").src = "./images/4.jpg";
+  document.getElementById("Image3").src = "./images/2.jpg";
+  document.getElementById("Image4").src = "./images/1.jpg";
+  document.getElementById("Image2").src = "./images/3.jpg";
+  controller.jumpScene(0)
+}
+
+window.onload = function() {
+  var combox = document.getElementById("common_box");
+  var cli_on = document.getElementById("cli_on");
+  var flag = true,
+    timer = null,
+    initime = null,
+    r_len = 0;
+  changeImage4()
+  for (let i = 0; i < 5; i++) {
+    document.getElementById('Image' + (i + 1)).addEventListener('click', () => {
+      eval('changeImage' + i + '()')
+    })
+    console.log(document.getElementById('Image' + (i + 1)));
+  }
+  cli_on.onclick = function() {
+    /*如果不需要动态效果，这两句足矣
+            combox.style.right = flag?'-270px':0;
+            flag = !flag;
+            */
+    clearTimeout(initime);
+    //根据状态flag执开展开收缩
+    if (flag) {
+      r_len = 0;
+      timer = setInterval(slideright, 10);
+    } else {
+      r_len = -200;
+      timer = setInterval(slideleft, 10);
+    }
+  }
+  //展开
+  function slideright() {
+    if (r_len <= -200) {
+      clearInterval(timer);
+      flag = !flag;
+      return false;
+    } else {
+      r_len -= 5;
+      combox.style.right = r_len + 'px';
+    }
+  }
+  //收缩
+  function slideleft() {
+    if (r_len >= 0) {
+      clearInterval(timer);
+      flag = !flag;
+      return false;
+    } else {
+      r_len += 5;
+      combox.style.right = r_len + 'px';
+    }
+  }
+  //加载后3秒页面自动收缩
+  initime = setTimeout("cli_on.click()", 3000);
+
+  function gotopageX() {
+    document.getElementById('main').css.display = 'flex'
   }
 
-  window.desNode = document.getElementById('des');
-  desNode.removeChild(desNode.childNodes[0]);
-  desNode.appendChild(document.createTextNode(des));
-
-  desNode.style.opacity = 1;
-  window.setTimeout('desNode.style.opacity = 0', 5000);
+  function myFunction() {
+    var pic1 = document.getElementById('pic');
+    var Arrow1 = document.getElementById('Arrow');
+    pic1.style.display = 'none';
+    Arrow1.style.display = '';
+  }
 }

@@ -9,7 +9,26 @@
 @import "header";
 @import "content";
 @import "info";
-
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+#common_box {
+    width: 230px;
+    position: fixed;
+    right: 0;
+    top: 40%;
+    border: 0px solid #789;
+    background: #fff;
+    z-index: 78
+}
+
+#cli_on {
+    width: 30px;
+    height: 350px;
+    float: left;
+    cursor: pointer;
+    background: #fff;
+    text-align: center;
+    line-height: 20px
 }
