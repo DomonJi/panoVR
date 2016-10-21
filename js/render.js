@@ -12,7 +12,6 @@ var camera,
   onPointerDownLon,
   onPointerDownLat,
   isUserInteracting = false,
-  lon = 0,
   lat = 0,
   phi = 0,
   theta = 0,
@@ -22,6 +21,7 @@ var camera,
   onMouseDownLon = 0,
   onMouseDownLat = 0,
   currentScene = controller.getCurrentScene(),
+  lon = currentScene.initLon,
   fov = currentScene.fovMax,
   width = window.innerWidth,
   height = window.innerHeight,
@@ -164,6 +164,7 @@ function onDocumentMouseUp(event) {
   isUserInteracting = false;
   element.removeEventListener('mousemove', onDocumentMouseMove, false);
   element.removeEventListener('mouseup', onDocumentMouseUp, false);
+  console.log(lon);
 }
 function onDocumentMouseWheel(event) {
   // WebKit
@@ -190,6 +191,12 @@ function animate() {
 }
 
 function render() {
+  !isUserInteracting && (() => {
+    lon += 0.05
+  })()
+  if (currentScene.lonmin && currentScene.lonmax) {
+    lon = Math.max(currentScene.lonmin, Math.min(currentScene.lonmax, lon))
+  }
   lat = Math.max(-currentScene.latConstrain, Math.min(currentScene.latConstrain, lat));
   // lat = 0
   phi = THREE.Math.degToRad(90 - lat);
@@ -206,7 +213,7 @@ function render() {
     }
     console.log(currentScene)
     cachedLoad(currentScene, texCb)
-    lon = 0
+    lon = currentScene.initLon
     lat = 0
     fov = currentScene.fovMax
     camera.projectionMatrix.makePerspective(fov, ratio, 1, 1100)

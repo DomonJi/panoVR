@@ -241,7 +241,7 @@ var latConstrains = [
   15,
   6,
   5,
-  10,
+  5,
   1,
   1,
   12,
@@ -256,7 +256,7 @@ var fovMaxs = [
   70,
   70,
   70,
-  82,
+  90,
   70,
   50,
   70,
@@ -282,6 +282,52 @@ var fields = [
   0,
   2
 ]
+var initLons = [
+  -33,
+  -206,
+  -206,
+  -5,
+  -85,
+  -111,
+  -35,
+  0,
+  0,
+  -75,
+  -33,
+  -70,
+  -80
+]
+
+var lonmins = [
+  NaN,
+  NaN,
+  NaN,
+  -82,
+  -104,
+  -112,
+  NaN,
+  -91,
+  -58,
+  -77,
+  -76,
+  -73,
+  NaN
+]
+var lonmaxs = [
+  NaN,
+  NaN,
+  NaN,
+  74,
+  105,
+  123,
+  NaN,
+  90,
+  50,
+  68,
+  70,
+  72,
+  NaN
+]
 for (var i = 0; i < 13; i++) {
   data.push({
     path: './imgs/' + (i + 1) + '.jpg',
@@ -289,6 +335,9 @@ for (var i = 0; i < 13; i++) {
     jump: jump[i],
     latConstrain: latConstrains[i],
     fovMax: fovMaxs[i],
+    initLon: initLons[i],
+    lonmin: lonmins[i],
+    lonmax: lonmaxs[i],
     field: fields[i]
   })
 }
