@@ -234,7 +234,7 @@ function changeImage0() {
   document.getElementById("Image3").src = "./images/2.jpg";
   document.getElementById("Image4").src = "./images/1.jpg";
   document.getElementById("Image5").src = "./images/0.jpg";
-  controller.jumpScene(8)
+  controller.jumpScene(7)
 }
 
 function changeImage1() {
