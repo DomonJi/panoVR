@@ -36,3 +36,15 @@
 .flt-img {
     cursor: pointer;
 }
+
+.box1 {
+    position: absolute;
+    left: 0%;
+    top: 50%;
+}
+
+.box2 {
+    position: absolute;
+    left: 45%;
+    top: 75%;
+}

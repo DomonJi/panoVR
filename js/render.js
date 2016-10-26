@@ -285,6 +285,15 @@ function changeImage4() {
 }
 
 window.onload = function() {
+  document.getElementById('Arrow').addEventListener('click', () => {
+    document.getElementById('vr').style.display = 'flex'
+    document.getElementById('box1').style.display = 'none'
+    document.getElementById('box2').style.display = 'none'
+    document.getElementById('audio1').play()
+  })
+  var audio2;
+  audio2 = document.getElementById('audio2');
+  audio2.volume = 0.2;
   var combox = document.getElementById("common_box");
   var cli_on = document.getElementById("cli_on");
   var flag = true,
