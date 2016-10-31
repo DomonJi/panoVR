@@ -155,17 +155,7 @@ var jump = [
       jumpto: 7
     }
   ],
-  [
-    {
-      plane: (function() {
-        let plane = new THREE.Mesh(new THREE.SphereGeometry(70, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
-        plane.position.x = -10
-        plane.position.z = 550
-        plane.position.y = -120
-        return plane
-      })(),
-      jumpto: 8
-    }, {
+  [ {
       plane: (function() {
         let plane = new THREE.Mesh(new THREE.SphereGeometry(70, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
         plane.position.x = -10
@@ -180,21 +170,9 @@ var jump = [
     {
       plane: (function() {
         let plane = new THREE.Mesh(new THREE.SphereGeometry(70, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
-        plane.position.x = -300
-        plane.position.z = -500
-        plane.position.y = -100
-        return plane
-      })(),
-      jumpto: 10
-    }
-  ],
-  [
-    {
-      plane: (function() {
-        let plane = new THREE.Mesh(new THREE.SphereGeometry(60, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
-        plane.position.x = -260
+        plane.position.x = -50
         plane.position.z = -550
-        plane.position.y = -300
+        plane.position.y = -280
         return plane
       })(),
       jumpto: 7
@@ -204,9 +182,9 @@ var jump = [
     {
       plane: (function() {
         let plane = new THREE.Mesh(new THREE.SphereGeometry(60, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
-        plane.position.x = -120
-        plane.position.z = -550
-        plane.position.y = -200
+        plane.position.x = 190
+        plane.position.z = 500
+        plane.position.y = -180
         return plane
       })(),
       jumpto: 11
@@ -215,13 +193,25 @@ var jump = [
   [
     {
       plane: (function() {
-        let plane = new THREE.Mesh(new THREE.SphereGeometry(60, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
-        plane.position.x = 0
-        plane.position.z = -550
-        plane.position.y = -160
+        let plane = new THREE.Mesh(new THREE.SphereGeometry(80, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
+        plane.position.x = 150
+        plane.position.z = 550
+        plane.position.y = -150
         return plane
       })(),
-      jumpto: 9
+      jumpto: 8
+    }
+  ],
+  [
+    {
+      plane: (function() {
+        let plane = new THREE.Mesh(new THREE.SphereGeometry(60, 6, 6), new THREE.MeshBasicMaterial({color: 0x000}))
+        plane.position.x = -190
+        plane.position.z = 500
+        plane.position.y = -200
+        return plane
+      })(),
+      jumpto: 10
     }
   ],
   [
