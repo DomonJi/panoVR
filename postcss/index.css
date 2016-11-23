@@ -44,7 +44,27 @@
 }
 
 .box2 {
+    transition: all .3s;
     position: absolute;
     left: 45%;
     top: 75%;
+}
+
+#footer {
+    clear: both;
+    display: block;
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    text-align: center;
+    margin: 0px;
+}
+
+.box2:hover {
+    transform: scale(1.08);
+    transform-origin: 60% 10%;
+}
+
+#pic {
+    transition: all .5s
 }

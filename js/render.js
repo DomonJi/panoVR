@@ -285,11 +285,16 @@ function changeImage4() {
 }
 
 window.onload = function() {
+  document.getElementById('common_box').style.display = 'block'
+  document.getElementById('box1').style.display = 'block'
+  document.getElementById('box2').style.display = 'block'
+  document.getElementById('footer').style.display = 'block'
   document.getElementById('Arrow').addEventListener('click', () => {
     document.getElementById('vr').style.display = 'flex'
     document.getElementById('box1').style.display = 'none'
     document.getElementById('box2').style.display = 'none'
     document.getElementById('audio1').play()
+    document.getElementById('footer').style.display = 'none'
   })
   var audio2;
   audio2 = document.getElementById('audio2');
@@ -298,7 +303,12 @@ window.onload = function() {
   var cli_on = document.getElementById("cli_on");
   var flag = true,
     timer = null,
-    initime = null,
+    initime = setTimeout(() => {
+      var pic1 = document.getElementById('pic');
+      // var Arrow1 = document.getElementById('Arrow');
+      pic1.style.opacity = 0;
+      // Arrow1.style.display = '';
+    }, 10000),
     r_len = 0;
   changeImage4()
   for (let i = 0; i < 5; i++) {
@@ -349,12 +359,5 @@ window.onload = function() {
 
   function gotopageX() {
     document.getElementById('main').css.display = 'flex'
-  }
-
-  function myFunction() {
-    var pic1 = document.getElementById('pic');
-    var Arrow1 = document.getElementById('Arrow');
-    pic1.style.display = 'none';
-    Arrow1.style.display = '';
   }
 }
