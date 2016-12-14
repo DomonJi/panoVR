@@ -40,13 +40,17 @@ const cachedLoader = (progress, error) => {
         console.log('cached')
       }
       resolve(tex)
-    }).then(cb).then(() => {
-      currentScene.jump.forEach((j) => {
-        if (cached[j.jumpto] === undefined) {
-          cached[j.jumpto] = loader.load(controller.getJumpScene(j.jumpto).path)
-        }
-      })
     })
+      .then(cb)
+      .then(() => {
+        currentScene
+          .jump
+          .forEach((j) => {
+            if (cached[j.jumpto] === undefined) {
+              cached[j.jumpto] = loader.load(controller.getJumpScene(j.jumpto).path)
+            }
+          })
+      })
   }
 }
 
@@ -61,15 +65,17 @@ const initTexCb = (tex) => {
 const texCb = (tex) => {
   return new Promise((res, rej) => {
     mesh.material = new THREE.MeshBasicMaterial({map: tex})
-    currentScene.jump.forEach((j) => scene.add(j.plane))
+    currentScene
+      .jump
+      .forEach((j) => scene.add(j.plane))
     updateDes(currentScene.des)
     res()
   })
 }
 
-var cachedLoad = cachedLoader(function(xhr) {
+var cachedLoad = cachedLoader(function (xhr) {
   console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-}, function(xhr) {
+}, function (xhr) {
   console.log('An error happened');
 })
 
@@ -83,7 +89,9 @@ function init(texture) {
   mesh = new THREE.Mesh(new THREE.SphereGeometry(500, 60, 40), new THREE.MeshBasicMaterial({map: texture}));
   mesh.scale.x = -1;
   scene.add(mesh);
-  currentScene.jump.forEach((j) => scene.add(j.plane));
+  currentScene
+    .jump
+    .forEach((j) => scene.add(j.plane));
   // scene.add(guid);
   renderer = new THREE.WebGLRenderer({antialias: true});
   renderer.setSize(width, height);
@@ -122,13 +130,15 @@ function detectMove(event) {
   let mouseVector = new THREE.Vector3((event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1, 0.5);
   raycaster.setFromCamera(mouseVector, camera);
   jumps = -1;
-  currentScene.jump.forEach(function(j) {
-    let intersects = raycaster.intersectObject(j.plane)
-    if (intersects.length > 0) {
-      jumps = j.jumpto
-    };
+  currentScene
+    .jump
+    .forEach(function (j) {
+      let intersects = raycaster.intersectObject(j.plane)
+      if (intersects.length > 0) {
+        jumps = j.jumpto
+      };
 
-  });
+    });
   // let intersect2 = raycaster.intersectObjects(scene.children, true)
   // console.log(intersect2);
   if (jumps > -1) {
@@ -143,7 +153,9 @@ function onWindowResized(event) {
   //  renderer.setSize(window.innerWidth, window.innerHeight);
   //  camer?a.projectionMatrix.makePerspective(fov, window.innerWidth / window.innerHeight, 1, 1100);
   renderer.setSize(width, height);
-  camera.projectionMatrix.makePerspective(fov, ratio, 1, 1100);
+  camera
+    .projectionMatrix
+    .makePerspective(fov, ratio, 1, 1100);
 }
 
 function onDocumentMouseDown(event) {
@@ -182,31 +194,42 @@ function onDocumentMouseWheel(event) {
       ? 45
       : currentScene.fovMax;
   }
-  camera.projectionMatrix.makePerspective(fov, ratio, 1, 1100);
+  camera
+    .projectionMatrix
+    .makePerspective(fov, ratio, 1, 1100);
 }
 
 function animate() {
   requestAnimationFrame(animate);
   render();
 }
-
+let rotation = 1
 function render() {
   !isUserInteracting && (() => {
-    lon += 0.05
+    lon += 0.04 * rotation
   })()
+  if (lon < currentScene.lonmin || lon > currentScene.lonmax) {
+    rotation = -rotation
+  }
   if (currentScene.lonmin && currentScene.lonmax) {
     lon = Math.max(currentScene.lonmin, Math.min(currentScene.lonmax, lon))
   }
   lat = Math.max(-currentScene.latConstrain, Math.min(currentScene.latConstrain, lat));
   // lat = 0
-  phi = THREE.Math.degToRad(90 - lat);
-  theta = THREE.Math.degToRad(lon);
+  phi = THREE
+    .Math
+    .degToRad(90 - lat);
+  theta = THREE
+    .Math
+    .degToRad(lon);
   camera.position.x = 100 * Math.sin(phi) * Math.cos(theta);
   camera.position.y = 100 * Math.cos(phi);
   camera.position.z = 100 * Math.sin(phi) * Math.sin(theta);
   camera.lookAt(scene.position);
   if (currentScene != controller.getCurrentScene()) {
-    currentScene.jump.forEach((j) => scene.remove(j.plane));
+    currentScene
+      .jump
+      .forEach((j) => scene.remove(j.plane));
     currentScene = controller.getCurrentScene();
     if (currentScene.field !== field) {
       eval('changeImage' + currentScene.field + '()')
@@ -216,7 +239,9 @@ function render() {
     lon = currentScene.initLon
     lat = 0
     fov = currentScene.fovMax
-    camera.projectionMatrix.makePerspective(fov, ratio, 1, 1100)
+    camera
+      .projectionMatrix
+      .makePerspective(fov, ratio, 1, 1100)
   }
   renderer.render(scene, camera);
 }
@@ -236,66 +261,144 @@ function updateDes(des) {
 
 function changeImage0() {
   field = 0
-  document.getElementById("Image1").src = "./images/4_cc.jpg";
-  document.getElementById("Image2").src = "./images/3.jpg";
-  document.getElementById("Image3").src = "./images/2.jpg";
-  document.getElementById("Image4").src = "./images/1.jpg";
-  document.getElementById("Image5").src = "./images/0.jpg";
+  document
+    .getElementById("Image1")
+    .src = "./images/4_cc.jpg";
+  document
+    .getElementById("Image2")
+    .src = "./images/3.jpg";
+  document
+    .getElementById("Image3")
+    .src = "./images/2.jpg";
+  document
+    .getElementById("Image4")
+    .src = "./images/1.jpg";
+  document
+    .getElementById("Image5")
+    .src = "./images/0.jpg";
   controller.jumpScene(7)
 }
 
 function changeImage1() {
   field = 1
-  document.getElementById("Image2").src = "./images/3_cc.jpg";
-  document.getElementById("Image1").src = "./images/4.jpg";
-  document.getElementById("Image3").src = "./images/2.jpg";
-  document.getElementById("Image4").src = "./images/1.jpg";
-  document.getElementById("Image5").src = "./images/0.jpg";
+  document
+    .getElementById("Image2")
+    .src = "./images/3_cc.jpg";
+  document
+    .getElementById("Image1")
+    .src = "./images/4.jpg";
+  document
+    .getElementById("Image3")
+    .src = "./images/2.jpg";
+  document
+    .getElementById("Image4")
+    .src = "./images/1.jpg";
+  document
+    .getElementById("Image5")
+    .src = "./images/0.jpg";
   controller.jumpScene(6)
 }
 
 function changeImage2() {
   field = 2
-  document.getElementById("Image3").src = "./images/2_cc.jpg";
-  document.getElementById("Image1").src = "./images/4.jpg";
-  document.getElementById("Image2").src = "./images/3.jpg";
-  document.getElementById("Image4").src = "./images/1.jpg";
-  document.getElementById("Image5").src = "./images/0.jpg";
+  document
+    .getElementById("Image3")
+    .src = "./images/2_cc.jpg";
+  document
+    .getElementById("Image1")
+    .src = "./images/4.jpg";
+  document
+    .getElementById("Image2")
+    .src = "./images/3.jpg";
+  document
+    .getElementById("Image4")
+    .src = "./images/1.jpg";
+  document
+    .getElementById("Image5")
+    .src = "./images/0.jpg";
   controller.jumpScene(12)
 }
 
 function changeImage3() {
   field = 3
-  document.getElementById("Image4").src = "./images/1_cc.jpg";
-  document.getElementById("Image1").src = "./images/4.jpg";
-  document.getElementById("Image3").src = "./images/2.jpg";
-  document.getElementById("Image2").src = "./images/3.jpg";
-  document.getElementById("Image5").src = "./images/0.jpg";
+  document
+    .getElementById("Image4")
+    .src = "./images/1_cc.jpg";
+  document
+    .getElementById("Image1")
+    .src = "./images/4.jpg";
+  document
+    .getElementById("Image3")
+    .src = "./images/2.jpg";
+  document
+    .getElementById("Image2")
+    .src = "./images/3.jpg";
+  document
+    .getElementById("Image5")
+    .src = "./images/0.jpg";
   controller.jumpScene(3)
 }
 
 function changeImage4() {
   field = 4
-  document.getElementById("Image5").src = "./images/0_cc.jpg";
-  document.getElementById("Image1").src = "./images/4.jpg";
-  document.getElementById("Image3").src = "./images/2.jpg";
-  document.getElementById("Image4").src = "./images/1.jpg";
-  document.getElementById("Image2").src = "./images/3.jpg";
+  document
+    .getElementById("Image5")
+    .src = "./images/0_cc.jpg";
+  document
+    .getElementById("Image1")
+    .src = "./images/4.jpg";
+  document
+    .getElementById("Image3")
+    .src = "./images/2.jpg";
+  document
+    .getElementById("Image4")
+    .src = "./images/1.jpg";
+  document
+    .getElementById("Image2")
+    .src = "./images/3.jpg";
   controller.jumpScene(0)
 }
 
-window.onload = function() {
-  document.getElementById('common_box').style.display = 'block'
-  document.getElementById('box1').style.display = 'block'
-  document.getElementById('box2').style.display = 'block'
-  document.getElementById('footer').style.display = 'block'
-  document.getElementById('Arrow').addEventListener('click', () => {
-    document.getElementById('vr').style.display = 'flex'
-    document.getElementById('box1').style.display = 'none'
-    document.getElementById('box2').style.display = 'none'
-    document.getElementById('audio1').play()
-    document.getElementById('footer').style.display = 'none'
-  })
+window.onload = function () {
+  document
+    .getElementById('common_box')
+    .style
+    .display = 'block'
+  document
+    .getElementById('box1')
+    .style
+    .display = 'block'
+  document
+    .getElementById('box2')
+    .style
+    .display = 'block'
+  document
+    .getElementById('footer')
+    .style
+    .display = 'block'
+  document
+    .getElementById('Arrow')
+    .addEventListener('click', () => {
+      document
+        .getElementById('vr')
+        .style
+        .display = 'flex'
+      document
+        .getElementById('box1')
+        .style
+        .display = 'none'
+      document
+        .getElementById('box2')
+        .style
+        .display = 'none'
+      document
+        .getElementById('audio1')
+        .play()
+      document
+        .getElementById('footer')
+        .style
+        .display = 'none'
+    })
   var audio2;
   audio2 = document.getElementById('audio2');
   audio2.volume = 0.2;
@@ -312,12 +415,14 @@ window.onload = function() {
     r_len = 0;
   changeImage4()
   for (let i = 0; i < 5; i++) {
-    document.getElementById('Image' + (i + 1)).addEventListener('click', () => {
-      eval('changeImage' + i + '()')
-    })
+    document
+      .getElementById('Image' + (i + 1))
+      .addEventListener('click', () => {
+        eval('changeImage' + i + '()')
+      })
     console.log(document.getElementById('Image' + (i + 1)));
   }
-  cli_on.onclick = function() {
+  cli_on.onclick = function () {
     /*如果不需要动态效果，这两句足矣
             combox.style.right = flag?'-270px':0;
             flag = !flag;
@@ -358,6 +463,9 @@ window.onload = function() {
   initime = setTimeout("cli_on.click()", 3000);
 
   function gotopageX() {
-    document.getElementById('main').css.display = 'flex'
+    document
+      .getElementById('main')
+      .css
+      .display = 'flex'
   }
 }
