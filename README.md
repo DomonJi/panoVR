@@ -1,6 +1,6 @@
 # panoVR
 
-A panoraminc virtual touring system made width three.js.
+A panoramic virtual touring system made width three.js.
 
 ## Demo
 
