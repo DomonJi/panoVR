@@ -1,6 +1,6 @@
 # panoVR
 
-A full view navigation system made width d3.js.
+A panoraminc virtual touring system made width three.js.
 
 ## Demo
 
